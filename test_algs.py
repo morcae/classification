@@ -45,10 +45,8 @@ def predict_naiveb(x,y):
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
         mfcc_feat = mfcc(sig, rate)
-        #d_mfcc_feat = delta(mfcc_feat, 2)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = model.predict(newX)
@@ -68,10 +66,8 @@ def predict_SVM(x,y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = clf.predict(newX)
@@ -90,10 +86,8 @@ def predict_NU_SVM(x, y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = clf.predict(newX)
@@ -112,10 +106,8 @@ def predict_linear_SVM(x, y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        #mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = lin_clf.predict(newX)
@@ -135,10 +127,8 @@ def predict_neighbours(x, y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        #mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = neigh.predict(newX)
@@ -158,10 +148,8 @@ def predict_RF(x, y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        #mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = clf.predict(newX)
@@ -181,10 +169,8 @@ def predict_RC(x, y):
         current_file = path + "%s" % filename
         print "working with " + current_file
         (rate, sig) = wav.read(current_file)
-        #mfcc_feat = mfcc(sig, rate)
         fbank_feat = logfbank(sig, rate)
         X = np.array(fbank_feat[1:3,:])
-
         newX = np.reshape(X, len(X[0])+len(X[1]))
 
         predicted = clf.predict(newX)
@@ -197,6 +183,7 @@ def predict_RC(x, y):
 
 
 x, y = getXYtrainset()
+
 predict_naiveb(x, y)      #total predicted correct:  19
 predict_SVM(x, y)         #total predicted correct:  23
 predict_NU_SVM(x, y)      #total predicted correct:  24
