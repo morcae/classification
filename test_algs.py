@@ -7,7 +7,6 @@ from sklearn.svm import NuSVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import RidgeClassifier
-from pybrain.tools.shortcuts import buildNetwork
 import scipy.io.wavfile as wav
 import os
 import numpy as np
