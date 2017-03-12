@@ -4,9 +4,10 @@
 90:10 traint:test sets
 
 ## algorithms used:
-* naive bayesian (19 out of 40 predicted)
-* SVM (23)
-* NU_SVM (24)
-* k nearest neighbours (26)
-* Random Forest (21)
-* Ridge (27)
+* naive bayesian (25 out of 40 predicted)
+* SVM (16)
+* NU_SVM (16)
+* linear SVM (33)
+* k nearest neighbours (25)
+* Random Forest (29)
+* Ridge (33)
