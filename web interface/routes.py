@@ -1,7 +1,3 @@
-"""
-Routes and views for the bottle application.
-"""
-
 from bottle import route, view, Bottle, request
 from datetime import datetime
 from bottle.ext.sqlite import Plugin
