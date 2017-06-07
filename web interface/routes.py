@@ -1,3 +1,7 @@
+"""
+Routes and views for the bottle application.
+"""
+
 from bottle import route, view, Bottle, request
 from datetime import datetime
 from bottle.ext.sqlite import Plugin
@@ -48,8 +52,7 @@ def second():
     opt = request.forms.get('genre')
     con = sql.connect('classification.db')
     cur = con.cursor()
-    
-    filename  = audio
+    filename  = audio.split('.')[0]
     n = cur.execute('''SELECT experts.%s from experts where id = "%s"''' %(opt, filename) )
     n =  n.fetchone()[0] + 1
     cur.execute('''UPDATE experts SET %s = %s WHERE id  = "%s"''' %(opt, n, filename) )
@@ -64,6 +67,8 @@ def second():
     #N = len(y)
     x = [1, 2, 3, 4]
     #width = 0.35    data = 
+
+
     mpl_fig = plt.figure()
     fig, ax = plt.subplots()
     fig.canvas.draw()
@@ -71,11 +76,16 @@ def second():
     ax.set_xlabel('Genres')
     ax.set_title('Scores by experts and genres')
     labels = ['blues', 'classical', 'pop', 'rock']
+    
+    
     plt.bar(x, y, color="blue", align='center')
     #plt.xticks(x, data)
     fig = plt.gcf() 
     plt.xticks(x, labels)
     plot_url = py.plot_mpl(fig, filename='mpl-basic-bar', auto_open=False)
+
+
+
     
     con.close()
 
@@ -88,22 +98,44 @@ def second():
 @route('/player', method='POST')
 @view('player')
 def player():
-    # get filename with low scores from db for streaming
     path = "/static/experts/"
+    # get filename with low scores from db
     con = sql.connect('classification.db')
     cur = con.cursor()
-    id = cur.execute(''' SELECT id, experts.blues+experts.classical+experts.pop+experts.rock as total  FROM experts GROUP BY id ORDER BY total ASC LIMIT 1 '''  )
+    id = cur.execute('''SELECT id, experts.blues+experts.classical+experts.pop+experts.rock AS total  FROM experts GROUP BY id ORDER BY total ASC LIMIT 1'''  )
     id = id.fetchone()[0]
-    con.close()
-    
-    # to use inside "second"
-    global audio
-    audio = id
-    
-    path_audio = path + audio
 
+    # select genres for file (three with max values from RC in ml_classifiction table)
+    filename = cur.execute('''select experts.filename from experts where id = %s''' %id )
+    filename = filename.fetchone()[0]
+    print filename
+    b = cur.execute('''select ml_classification.blues from ml_classification where filename = "%s"''' %filename )
+    b = b.fetchone()[0]
+    c = cur.execute('''select ml_classification.classical from ml_classification where filename = "%s"''' %filename )
+    c = c.fetchone()[0]
+    p = cur.execute('''select ml_classification.pop from ml_classification where filename = "%s"''' %filename )
+    p = p.fetchone()[0]
+    r = cur.execute('''select ml_classification.rock from ml_classification where filename = "%s"''' %filename )
+    r = r.fetchone()[0]
+    if b<c and b<p and b<r:
+        genres = ['classical', 'pop', 'rock']
+    elif c<b and c<p and c<r:
+        genres = ['blues', 'pop', 'rock']
+    elif p<b and p<c and p<r:
+        genres = ['blues', 'classical', 'rock']
+    else:
+        genres = ['blues', 'classical', 'pop']
+    first = genres[0]
+    second = genres[1]
+    third = genres[2]
+    con.close()
+
+    global audio
+    audio = str(id) + ".wav"
+    path_audio = path + audio
+        
     return dict(
         title='Start',
         message='Your application description page.',
-        year=datetime.now().year, path_audio = path_audio
+        year=datetime.now().year, path_audio = path_audio, first = first, second = second, third = third
     )
