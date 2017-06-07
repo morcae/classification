@@ -8,11 +8,9 @@
 	<center>
 		<audio controls>
 			  <source src={{!path_audio}} type="audio/wav">
-			  
 					Your browser does not support the audio element.
-			</audio>
+		</audio>
         <form name="options" method="POST" action="/second">
-			
 			<div class="checkboxgroup">
 				  <input type="radio" name="genre" value="blues" > blues </input><br>
 			</div>
