@@ -12,17 +12,15 @@
 		</audio>
         <form name="options" method="POST" action="/second">
 			<div class="checkboxgroup">
-				  <input type="radio" name="genre" value="blues" > blues </input><br>
+				  <input type="radio" name="genre" value={{!first}} > {{!first}} </input><br>
 			</div>
 			<div class="checkboxgroup">
-				  <input type="radio" name="genre" value="classical" > classical </input><br>
+				  <input type="radio" name="genre" value={{!second}} > {{!second}} </input><br>
 			</div>
 			<div class="checkboxgroup">
-				  <input type="radio" name="genre" value="pop" > pop </input><br>
+				  <input type="radio" name="genre" value={{ !third}} > {{ !third}} </input><br>
 			</div>
-			<div class="checkboxgroup">
-				  <input type="radio" name="genre" value="rock" > rock </input><br>
-			</div>
+
 			<div class="checkboxgroup">
 				  <input name="Start" type="submit" value="Submit results">
 			</div>
