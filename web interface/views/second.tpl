@@ -7,7 +7,7 @@
 </div>
 </div>
 
-<iframe width="500" height="400" frameborder="0" scrolling="no" src="//plot.ly/~morcae/0.embed"></iframe>
+<iframe width="500" height="400" frameborder="0" scrolling="no" src="{{!plot_url}}"></iframe>
 
 <div class="option">
 	<center>
