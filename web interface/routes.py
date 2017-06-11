@@ -2,9 +2,10 @@ from bottle import route, view, Bottle, request
 from datetime import datetime
 from bottle.ext.sqlite import Plugin
 import sqlite3 as sql
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt; plt.rcdefaults()
 import matplotlib.pyplot as mpld3
 import plotly.plotly as py
+import plotly.tools as tls
 from plotly.graph_objs import *
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import os
@@ -60,35 +61,27 @@ def second():
     
     # make plot with scores
     py.sign_in("morcae", "mATYBYmeS9FS6jRNXyrz")
-    #N = len(y)
     x = [1, 2, 3, 4]
-    #width = 0.35    data = 
 
-
-    mpl_fig = plt.figure()
-    fig, ax = plt.subplots()
-    fig.canvas.draw()
-    ax.set_ylabel('Scores')
-    ax.set_xlabel('Genres')
-    ax.set_title('Scores by experts and genres')
     labels = ['blues', 'classical', 'pop', 'rock']
-    
-    
+    mpl_fig = plt.figure()
+    ax = mpl_fig.add_subplot(111)
+
     plt.bar(x, y, color="blue", align='center')
-    #plt.xticks(x, data)
-    fig = plt.gcf() 
-    plt.xticks(x, labels)
-    plot_url = py.plot_mpl(fig, filename='mpl-basic-bar', auto_open=False)
-
-
-
+    ax.set_ylabel('Scores')
+    ax.set_xlabel('blues                classical                 pop                   rock')
+    ax.set_title('Scores by experts and genres')
+    ax.set_xticks([])
+    plot_url = py.plot_mpl(mpl_fig, filename='stacked-bar-chart', auto_open=False)
+    plot_url += ".embed"
+    print plot_url
     
     con.close()
 
     return dict(
         title='Second',
         message='Your application description page.',
-        year=datetime.now().year
+        year=datetime.now().year, plot_url = plot_url
     )
 
 @route('/player', method='POST')
@@ -101,10 +94,9 @@ def player():
     id = cur.execute('''SELECT id, experts.blues+experts.classical+experts.pop+experts.rock AS total  FROM experts GROUP BY id ORDER BY total ASC LIMIT 1'''  )
     id = id.fetchone()[0]
 
-    # select genres for file (three with max values from RC in ml_classifiction table)
+    # select genres for file
     filename = cur.execute('''select experts.filename from experts where id = %s''' %id )
     filename = filename.fetchone()[0]
-    print filename
     b = cur.execute('''select ml_classification.blues from ml_classification where filename = "%s"''' %filename )
     b = b.fetchone()[0]
     c = cur.execute('''select ml_classification.classical from ml_classification where filename = "%s"''' %filename )
